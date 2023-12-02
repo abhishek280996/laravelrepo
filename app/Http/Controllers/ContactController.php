@@ -23,4 +23,24 @@ class ContactController extends Controller
             }
         }
     }
+
+    public function getContactProfileIdentityDetails(Request $request)
+    {
+        if($request->ajax() && $request->isMethod('post'))
+        {
+            try
+            {
+                $contactID = Crypt::decrypt($request->input('contactID'));
+                $contactProfileDetails = Contact::getContactProfileIdentityDetails($contactID);
+                $functionalDCCList = Crypt::decrypt($request->attributes->get('userInfo')['functionalDCCList']);
+                $contactProfileIdentityRenderedDetails = view('Backend.Contact.Identity.contact-profile-identity',compact('contactProfileDetails','functionalDCCList'))->render();
+                return response()->json(['success' => true,'contactProfileIdentityRenderedDetails' => $contactProfileIdentityRenderedDetails]);
+            }
+            catch(\Exception $e)
+            {
+                dd($e->getMessage());
+                return response()->json(['success' => false]);
+            }
+        }
+    }
 }
