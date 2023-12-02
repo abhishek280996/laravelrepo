@@ -8,6 +8,6 @@ class MainBranchController extends Controller
 {
     public function index()
     {
-        return 'Main Branch Controller';
+        return 'Main Branch Controller1';
     }
 }
